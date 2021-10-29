@@ -1,7 +1,5 @@
 package org.inria.restlet.mta.resources;
 
-import java.util.ArrayList;
-
 import org.inria.restlet.mta.backend.Backend;
 import org.inria.restlet.mta.internals.Tweet;
 import org.inria.restlet.mta.internals.User;
@@ -31,57 +29,31 @@ public class TweetsResource extends ServerResource{
     }
     
     
-    /**
-    *
-    * Returns the list of all the users
-    *
-    * @return  JSON representation of the users
-    * @throws JSONException
-    */
-//   @Get("json")
-//   public Representation getTweet() throws JSONException
-//   {
-//       Collection<User> users = backend_.getDatabase().getUsers();
-//       Collection<JSONObject> jsonUsers = new ArrayList<JSONObject>();
-//
-//       for (User user : users)
-//       {
-//           JSONObject current = new JSONObject();
-//           current.put("id", user.getId());
-//           current.put("name", user.getName());
-//           current.put("url", getReference() + "/" + user.getId());
-//           jsonUsers.add(current);
-//
-//       }
-//       JSONArray jsonArray = new JSONArray(jsonUsers);
-//       return new JsonRepresentation(jsonArray);
-//   }
-    
     @Post("json")
-    public Representation createTweet(JsonRepresentation representation)
-        throws Exception
+    public Representation createTweet(JsonRepresentation representation)throws Exception
     {
     	
     	String userIdString = (String) getRequest().getAttributes().get("userId");
         int userId = Integer.valueOf(userIdString);
-        //appele utilisateur et faire une methode dans user qui permet d'ajouter un tweet a celui ci 
-       ArrayList<Tweet> tw= backend_.getDatabase().getUser(userId).getTweets();
+        //appele utilisateur et faire une methode dans user qui permet d'ajouter un tweet a celui
+        //Tweet tw= backend_.getDatabase().getUser(userId).getTweets().get(userId);
         
-        
+        //appel du user qui a l'id recupéré
+       user_ = backend_.getDatabase().getUser(userId);
+       
         JSONObject object = representation.getJsonObject();
         String contenu = object.getString("contenu");
-     
-
+       
         // Save the tweet
-      Tweet tweet = backend_.getDatabase().createTweet(contenu);
-
+        Tweet tweets = backend_.getDatabase().createTweet(contenu);
+        //ajout du tweet a la liste des tweets du user
+        user_.addTweet(tweets);
         // generate result
         JSONObject resultObject = new JSONObject();
-        resultObject.put("contenu", tw.getContenu());
-        resultObject.put("id_tweet", tweet.getId_tweet());
+        resultObject.put("contenu", tweets.getContenu());
+        resultObject.put("id", tweets.getId());
         JsonRepresentation result = new JsonRepresentation(resultObject);
-        return result;
+       return result;
     }
-
 
 }

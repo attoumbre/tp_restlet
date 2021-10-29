@@ -1,27 +1,30 @@
 package org.inria.restlet.mta.internals;
 
 public class Tweet {
-	private int id_tweet;
-	private String contenu;
+	
+	// id interne
+	private int id_;
+	//contenu publié
+	private String contenu_;
 
-	public Tweet(String contenu2) {
-		this.contenu= contenu2;
+	public Tweet(String contenu) {
+		contenu_ = contenu;
 	}
 
 	public String getContenu() {
-		return contenu;
+		return contenu_ ;
 	}
 
 	public void setContenu(String contenu) {
-		this.contenu = contenu;
+		contenu_ = contenu;
 	}
 
-	public int getId_tweet() {
-		return id_tweet;
+	public int getId() {
+		return id_;
 	}
 
-	public void setId_tweet(int id_tweet) {
-		this.id_tweet = id_tweet;
+	public void setId(int id) {
+		id_ = id;
 	}
 
 }

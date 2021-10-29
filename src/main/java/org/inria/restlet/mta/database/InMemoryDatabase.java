@@ -2,7 +2,6 @@ package org.inria.restlet.mta.database;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.inria.restlet.mta.internals.Tweet;
@@ -31,6 +30,7 @@ public class InMemoryDatabase
     public InMemoryDatabase()
     {
         users_ = new HashMap<Integer, User>();
+        tweets_ = new HashMap<Integer, Tweet>();
     }
 
     /**
@@ -52,8 +52,9 @@ public class InMemoryDatabase
     
     public synchronized Tweet createTweet(String contenu)
     {
+    	
         Tweet tweet = new Tweet(contenu);
-        tweet.setId_tweet(tweetCount_);
+        tweet.setId(tweetCount_);
         tweets_.put(tweetCount_, tweet);
         tweetCount_ ++;
         return tweet;
